@@ -1,8 +1,20 @@
 {
 	"name": "easy-js-modal",
-	"private": true,
-	"version": "0.0.0",
+	"description": "asyJsModal - A lightweight, easy-to-use, and customizable modal plugin for JavaScript applications",
+	"author": "Sergei Margelov <smargelov@gmail.com>",
+	"version": "0.1.0",
 	"type": "module",
+	"files": [
+		"dist"
+	],
+	"main": "./dist/easy-js-modal.umd.cjs",
+	"module": "./dist/easy-js-modal.js",
+	"exports": {
+		".": {
+			"import": "./dist/easy-js-modal.js",
+			"require": "./dist/easy-js-modal.umd.cjs"
+		}
+	},
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc && vite build",

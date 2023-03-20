@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.log
+*.lock
+*.json
+*.config.*
+.eslint*
+.prettier*
+.editorconfig
+.gitignore
+index.html
