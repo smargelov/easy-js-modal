@@ -9,3 +9,4 @@ dist/
 .editorconfig
 .gitignore
 index.html
+src/app.ts
