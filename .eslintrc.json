@@ -1,0 +1,38 @@
+{
+	"settings": {
+		"import/resolver": {
+			"node": {
+				"extensions": [".js", ".jsx", ".ts", ".tsx"]
+			}
+		}
+	},
+	"parser": "@typescript-eslint/parser",
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended",
+		"airbnb-base",
+		"prettier"
+	],
+	"plugins": ["@typescript-eslint"],
+	"rules": {
+		"no-console": "off",
+		"semi": "off",
+		"import/no-extraneous-dependencies": [
+			"error",
+			{
+				"devDependencies": true
+			}
+		],
+		"import/extensions": [
+			"error",
+			"ignorePackages",
+			{
+				"": "never",
+				"js": "never",
+				"jsx": "never",
+				"ts": "never",
+				"tsx": "never"
+			}
+		]
+	}
+}

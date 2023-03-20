@@ -1,17 +1,27 @@
 {
-  "name": "easy-js-modal",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-		"test": "vitest"
+	"name": "easy-js-modal",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"preview": "vite preview",
+		"test": "vitest",
+		"lint": "eslint . --ext .ts",
+		"format": "prettier --write ."
 	},
-  "devDependencies": {
-    "typescript": "^4.9.3",
-    "vite": "^4.2.0",
-    "vitest": "^0.29.7"
-  }
+	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^5.56.0",
+		"@typescript-eslint/parser": "^5.56.0",
+		"eslint": "^8.36.0",
+		"eslint-config-airbnb": "^19.0.4",
+		"eslint-config-prettier": "^8.8.0",
+		"eslint-import-resolver-typescript": "^3.5.3",
+		"eslint-plugin-prettier": "^4.2.1",
+		"prettier": "^2.8.5",
+		"typescript": "^4.9.3",
+		"vite": "^4.2.0",
+		"vitest": "^0.29.7"
+	}
 }
