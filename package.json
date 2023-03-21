@@ -1,6 +1,6 @@
 {
 	"name": "easy-js-modal",
-	"description": "asyJsModal - A lightweight, easy-to-use, and customizable modal plugin for JavaScript applications",
+	"description": "EasyJsModal - A lightweight, easy-to-use, and customizable modal plugin for JavaScript applications",
 	"author": "Sergei Margelov <smargelov@gmail.com>",
 	"version": "0.1.0",
 	"type": "module",

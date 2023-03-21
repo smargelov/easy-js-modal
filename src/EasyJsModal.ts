@@ -1,3 +1,25 @@
+const enableScroll = (): void => {
+	document.body.style.paddingRight = ''
+	document.body.style.overflow = ''
+}
+
+const calculateScrollbarWidth = (): number => {
+	const outer = document.createElement('div')
+	outer.style.visibility = 'hidden'
+	outer.style.width = '100px'
+	outer.style.overflow = 'scroll'
+	document.body.appendChild(outer)
+
+	const inner = document.createElement('div')
+	inner.style.width = '100%'
+	outer.appendChild(inner)
+
+	const scrollbarWidth = outer.offsetWidth - inner.offsetWidth
+
+	outer.remove()
+	return scrollbarWidth
+}
+
 interface ModalConfig {
 	animationDuration: number
 	modalBlockClass: string
@@ -5,14 +27,22 @@ interface ModalConfig {
 
 export class EasyJsModal {
 	private modalElement: HTMLElement
+
 	private modalWindow: HTMLElement
+
 	private scrollbarWidth: number
+
 	private modalBlockClass: string
+
 	private closeButtonClass: string
+
 	private animationDuration: number
+
 	private modalWindowClass: string
-	private openTimeout: any = null
-	private closeTimeout: any = null
+
+	private openTimeout: ReturnType<typeof setTimeout> | null = null
+
+	private closeTimeout: ReturnType<typeof setTimeout> | null = null
 
 	constructor(content: string | HTMLElement, config?: Partial<ModalConfig>) {
 		this.modalBlockClass = config?.modalBlockClass || 'modal'
@@ -23,7 +53,7 @@ export class EasyJsModal {
 		this.modalWindow = this.createModalWindow(content)
 		this.modalElement = this.createModalElement()
 
-		this.scrollbarWidth = this.calculateScrollbarWidth()
+		this.scrollbarWidth = calculateScrollbarWidth()
 		this.init()
 	}
 
@@ -52,8 +82,10 @@ export class EasyJsModal {
 		this.openTimeout = setTimeout(() => {
 			this.modalElement.classList.add(`${this.modalBlockClass}--visible`)
 			this.modalWindow.classList.add(`${this.modalWindowClass}--visible`)
-			clearTimeout(this.openTimeout)
-			this.openTimeout = null
+			if (this.openTimeout !== null) {
+				clearTimeout(this.openTimeout)
+				this.openTimeout = null
+			}
 		}, this.animationDuration + 50)
 		this.disableScroll()
 		this.addEventListeners()
@@ -62,13 +94,15 @@ export class EasyJsModal {
 	close(): void {
 		this.modalElement.classList.remove(`${this.modalBlockClass}--visible`)
 		this.modalWindow.classList.remove(`${this.modalWindowClass}--visible`)
-		this.enableScroll()
+		enableScroll()
 		this.closeTimeout = setTimeout(() => {
 			this.modalElement.style.display = ''
 			this.removeEventListeners()
 			this.destroy()
-			clearTimeout(this.closeTimeout)
-			this.closeTimeout = null
+			if (this.closeTimeout !== null) {
+				clearTimeout(this.closeTimeout)
+				this.closeTimeout = null
+			}
 		}, this.animationDuration + 50)
 	}
 
@@ -107,31 +141,9 @@ export class EasyJsModal {
 		this.trapFocus(event)
 	}
 
-	private calculateScrollbarWidth(): number {
-		const outer = document.createElement('div')
-		outer.style.visibility = 'hidden'
-		outer.style.width = '100px'
-		outer.style.overflow = 'scroll'
-		document.body.appendChild(outer)
-
-		const inner = document.createElement('div')
-		inner.style.width = '100%'
-		outer.appendChild(inner)
-
-		const scrollbarWidth = outer.offsetWidth - inner.offsetWidth
-
-		outer.remove()
-		return scrollbarWidth
-	}
-
 	private disableScroll(): void {
 		document.body.style.paddingRight = `${this.scrollbarWidth}px`
 		document.body.style.overflow = 'hidden'
-	}
-
-	private enableScroll(): void {
-		document.body.style.paddingRight = ''
-		document.body.style.overflow = ''
 	}
 
 	private trapFocus(event: KeyboardEvent): void {
@@ -148,11 +160,9 @@ export class EasyJsModal {
 				lastFocusableElement.focus()
 				event.preventDefault()
 			}
-		} else {
-			if (document.activeElement === lastFocusableElement) {
-				firstFocusableElement.focus()
-				event.preventDefault()
-			}
+		} else if (document.activeElement === lastFocusableElement) {
+			firstFocusableElement.focus()
+			event.preventDefault()
 		}
 	}
 
