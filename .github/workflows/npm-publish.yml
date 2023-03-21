@@ -1,5 +1,8 @@
 name: Publish to npm
 on:
+  pull_request:
+    branches:
+      - master
   push:
     branches:
       - master

@@ -13,7 +13,8 @@
 		".": {
 			"import": "./dist/easy-js-modal.js",
 			"require": "./dist/easy-js-modal.umd.cjs"
-		}
+		},
+		"./dist/style.css": "./dist/style.css"
 	},
 	"scripts": {
 		"dev": "vite",
