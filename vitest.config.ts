@@ -1,6 +1,6 @@
 export default {
-	testDir: 'tests',
-	runnerOptions: {
-		testFiles: 'src/**/*.test.ts'
+	test: {
+		include: ['**/*.test.{ts,tsx}'],
+		environment: 'jsdom'
 	}
 }
