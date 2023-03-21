@@ -9,12 +9,7 @@ export default defineConfig({
 		},
 		rollupOptions: {
 			external: [],
-			output: {
-				assetFileNames: (assetInfo) => {
-					if (assetInfo.name === 'style.css') return 'easy-js-modal.css'
-					return assetInfo.name
-				}
-			}
+			output: {}
 		}
 	}
 })
