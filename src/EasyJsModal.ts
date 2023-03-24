@@ -1,3 +1,5 @@
+import modalManager from './ModalManager'
+
 const enableScroll = (): void => {
 	document.body.style.paddingRight = ''
 	document.body.style.overflow = ''
@@ -78,6 +80,13 @@ export class EasyJsModal {
 	}
 
 	open(): void {
+		if (modalManager.isActiveModal) {
+			console.warn(
+				'Another modal is already open. Please close it before opening a new one.'
+			)
+			return
+		}
+
 		this.modalElement.style.display = 'flex'
 		this.openTimeout = setTimeout(() => {
 			this.modalElement.classList.add(`${this.modalBlockClass}--visible`)
@@ -89,6 +98,8 @@ export class EasyJsModal {
 		}, this.animationDuration + 50)
 		this.disableScroll()
 		this.addEventListeners()
+
+		modalManager.setActiveModal(this)
 	}
 
 	close(): void {
@@ -104,6 +115,8 @@ export class EasyJsModal {
 				this.closeTimeout = null
 			}
 		}, this.animationDuration + 50)
+
+		modalManager.removeActiveModal(this)
 	}
 
 	destroy(): void {
