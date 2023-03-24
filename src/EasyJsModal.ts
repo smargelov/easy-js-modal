@@ -119,7 +119,7 @@ export class EasyJsModal {
 		modalManager.removeActiveModal(this)
 	}
 
-	destroy(): void {
+	private destroy(): void {
 		this.modalElement.remove()
 	}
 
