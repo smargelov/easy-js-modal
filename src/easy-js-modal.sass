@@ -1,13 +1,22 @@
 .modal
+	--ejm-layout-background-color: rgba(0, 0, 0, 0.5)
+	--ejm-animation-duration: 0.3s
+	--ejm-window-background-color: #fff
+	--ejm-window-width: 90%
+	--ejm-window-max-width: 500px
+	--ejm-window-padding: 2rem
+	--ejm-window-border-radius: 5px
+	--ejm-close-font-size: 1.25rem
+
 	display: none
 	position: fixed
 	inset: 0
-	background-color: rgba(0, 0, 0, 0.5)
+	background-color: var(--ejm-layout-background-color)
 	justify-content: center
 	align-items: flex-start
 	z-index: 1000
 	opacity: 0
-	transition: opacity 0.3s
+	transition: opacity var(--ejm-animation-duration)
 	pointer-events: none
 
 	&--visible
@@ -17,15 +26,15 @@
 
 	&__window
 		margin: auto
-		background-color: #fff
-		padding: 2rem
-		border-radius: 5px
+		background-color: var(--ejm-window-background-color)
+		padding: var(--ejm-window-padding)
+		border-radius: var(--ejm-window-border-radius)
 		position: relative
-		width: 90%
-		max-width: 500px
+		width: var(--ejm-window-width)
+		max-width: var(--ejm-window-max-width)
 		transform: translateY(-50px)
 		opacity: 0
-		transition: all 0.3s
+		transition: all var(--ejm-animation-duration)
 
 		&--visible
 			transform: translateY(0)

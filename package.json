@@ -2,7 +2,7 @@
 	"name": "easy-js-modal",
 	"description": "EasyJsModal - A lightweight, easy-to-use, and customizable modal plugin for JavaScript applications",
 	"author": "Sergei Margelov <smargelov@gmail.com>",
-	"version": "0.4.1",
+	"version": "0.4.2",
 	"type": "module",
 	"private": false,
 	"files": [
@@ -28,6 +28,7 @@
 	},
 	"devDependencies": {
 		"@rollup/plugin-multi-entry": "^6.0.0",
+		"@testing-library/user-event": "^14.4.3",
 		"@typescript-eslint/eslint-plugin": "^5.56.0",
 		"@typescript-eslint/parser": "^5.56.0",
 		"eslint": "^8.36.0",

@@ -22,9 +22,34 @@ const calculateScrollbarWidth = (): number => {
 	return scrollbarWidth
 }
 
+const convertCamelToPrefixedKebabCase = (camelCaseString: string): string => {
+	if (typeof camelCaseString !== 'string') {
+		throw new Error('The input should be a string.')
+	}
+
+	const kebabCaseString = camelCaseString
+		.replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+		.toLowerCase()
+	return `--ejm-${kebabCaseString}`
+}
+
 interface ModalConfig {
 	animationDuration: number
 	modalBlockClass: string
+}
+
+interface ModalStylesConfig {
+	layoutBackgroundColor: string
+	windowBackgroundColor: string
+	windowWidth: string
+	windowMaxWidth: string
+	windowPadding: string
+	windowBorderRadius: string
+	closeFontSize: string
+}
+
+interface ModalStyles extends ModalStylesConfig {
+	animationDuration: string
 }
 
 export class EasyJsModal {
@@ -42,15 +67,32 @@ export class EasyJsModal {
 
 	private modalWindowClass: string
 
+	private modalStyles: ModalStyles
+
 	private openTimeout: ReturnType<typeof setTimeout> | null = null
 
 	private closeTimeout: ReturnType<typeof setTimeout> | null = null
 
-	constructor(content: string | HTMLElement, config?: Partial<ModalConfig>) {
+	constructor(
+		content: string | HTMLElement,
+		config?: Partial<ModalConfig>,
+		styles?: Partial<ModalStylesConfig>
+	) {
 		this.modalBlockClass = config?.modalBlockClass || 'modal'
 		this.animationDuration = config?.animationDuration || 300
 		this.closeButtonClass = `${this.modalBlockClass}__close`
 		this.modalWindowClass = `${this.modalBlockClass}__window`
+		this.modalStyles = {
+			layoutBackgroundColor:
+				styles?.layoutBackgroundColor || 'rgba(0, 0, 0, 0.5)',
+			animationDuration: `${this.animationDuration}ms`,
+			windowBackgroundColor: styles?.windowBackgroundColor || '#fff',
+			windowWidth: styles?.windowWidth || '90%',
+			windowMaxWidth: styles?.windowMaxWidth || '500px',
+			windowPadding: styles?.windowPadding || '2rem',
+			windowBorderRadius: styles?.windowBorderRadius || '0.5rem',
+			closeFontSize: styles?.closeFontSize || '1.25rem'
+		}
 
 		this.modalWindow = this.createModalWindow(content)
 		this.modalElement = this.createModalElement()
@@ -60,6 +102,12 @@ export class EasyJsModal {
 	}
 
 	private init(): void {
+		if (modalManager.isActiveModal) {
+			console.warn(
+				'Another modal is already open. Please close it before opening a new one.'
+			)
+			return
+		}
 		document.body.appendChild(this.modalElement)
 	}
 
@@ -75,8 +123,14 @@ export class EasyJsModal {
 		modalWindow.classList.add(this.modalWindowClass)
 		const closeButton = `<button class="${this.closeButtonClass}">×</button>`
 		modalWindow.innerHTML =
-			closeButton + (typeof content === 'string' ? content : content.outerHTML)
+			(typeof content === 'string' ? content : content.outerHTML) + closeButton
 		return modalWindow
+	}
+
+	private getStylesForModal(): string[] {
+		return Object.entries(this.modalStyles).map(
+			([key, value]) => `${convertCamelToPrefixedKebabCase(key)}: ${value};`
+		)
 	}
 
 	open(): void {
@@ -87,6 +141,7 @@ export class EasyJsModal {
 			return
 		}
 
+		this.modalElement.style.cssText = this.getStylesForModal().join(' ')
 		this.modalElement.style.display = 'flex'
 		this.openTimeout = setTimeout(() => {
 			this.modalElement.classList.add(`${this.modalBlockClass}--visible`)
@@ -98,7 +153,15 @@ export class EasyJsModal {
 		}, this.animationDuration + 50)
 		this.disableScroll()
 		this.addEventListeners()
+		modalManager.focusableElementBeforeModal =
+			document.activeElement as HTMLElement
 
+		const firstInteractiveElement = this.modalWindow.querySelector(
+			'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+		)
+		if (firstInteractiveElement) {
+			;(firstInteractiveElement as HTMLElement).focus()
+		}
 		modalManager.setActiveModal(this)
 	}
 
@@ -115,7 +178,7 @@ export class EasyJsModal {
 				this.closeTimeout = null
 			}
 		}, this.animationDuration + 50)
-
+		modalManager.focusableElementBeforeModal?.focus()
 		modalManager.removeActiveModal(this)
 	}
 

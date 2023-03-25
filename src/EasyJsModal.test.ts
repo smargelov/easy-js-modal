@@ -1,4 +1,5 @@
 import { test, expect } from 'vitest'
+import userEvent from '@testing-library/user-event'
 import { EasyJsModal } from './EasyJsModal'
 
 test('Modal opens and closes', async () => {
@@ -110,6 +111,99 @@ test('Only one active modal instance', async () => {
 	await new Promise((resolve) => {
 		setTimeout(() => {
 			expect(modal2Element.style.display).toBe('')
+			resolve(null)
+		}, 400)
+	})
+})
+
+test('Modal applies custom styles', async () => {
+	const content = '<p>Hello, world!</p>'
+	const styles = {
+		layoutBackgroundColor: 'rgba(255, 0, 0, 0.5)',
+		windowBackgroundColor: '#ccc',
+		windowWidth: '80%',
+		windowMaxWidth: '600px',
+		windowPadding: '1rem',
+		windowBorderRadius: '1rem',
+		closeFontSize: '1.5rem'
+	}
+	const animationDuration = 500
+	const modal = new EasyJsModal(
+		content,
+		{
+			animationDuration
+		},
+		styles
+	)
+
+	modal.open()
+	const modalElement = document.querySelector('.modal') as HTMLElement
+	const modalWindow = document.querySelector('.modal__window') as HTMLElement
+	const closeButton = document.querySelector('.modal__close') as HTMLElement
+	expect(modalElement).toBeDefined()
+	expect(modalWindow).toBeDefined()
+	expect(closeButton).toBeDefined()
+
+	expect(
+		modalElement.style.getPropertyValue('--ejm-layout-background-color')
+	).toBe(styles.layoutBackgroundColor)
+	expect(modalElement.style.getPropertyValue('--ejm-animation-duration')).toBe(
+		`${animationDuration}ms`
+	)
+	expect(
+		modalElement.style.getPropertyValue('--ejm-window-background-color')
+	).toBe(styles.windowBackgroundColor)
+	expect(modalElement.style.getPropertyValue('--ejm-window-width')).toBe(
+		styles.windowWidth
+	)
+	expect(modalElement.style.getPropertyValue('--ejm-window-max-width')).toBe(
+		styles.windowMaxWidth
+	)
+	expect(modalElement.style.getPropertyValue('--ejm-window-padding')).toBe(
+		styles.windowPadding
+	)
+	expect(
+		modalElement.style.getPropertyValue('--ejm-window-border-radius')
+	).toBe(styles.windowBorderRadius)
+	expect(modalElement.style.getPropertyValue('--ejm-close-font-size')).toBe(
+		styles.closeFontSize
+	)
+
+	modal.close()
+	await new Promise((resolve) => {
+		setTimeout(() => {
+			expect(modalElement.style.display).toBe('')
+			resolve(null)
+		}, animationDuration + 100)
+	})
+})
+
+test('Modal traps focus within the modal', async () => {
+	const content =
+		'<p>Hello, world!</p> <button id="first">First</button> <button id="last">Last</button>'
+	const modal = new EasyJsModal(content)
+
+	modal.open()
+	const modalElement = document.querySelector('.modal') as HTMLElement
+	const firstButton = document.getElementById('first') as HTMLElement
+	const lastButton = document.getElementById('last') as HTMLElement
+	const closeButton = document.querySelector('.modal__close') as HTMLElement
+
+	expect(document.activeElement).toBe(firstButton)
+	await userEvent.tab()
+	expect(document.activeElement).toBe(lastButton)
+
+	// Focus on the first element and simulate pressing the Shift + Tab keys.
+	firstButton.focus()
+	await userEvent.tab({ shift: true })
+
+	// The focus should move to the last focusable element.
+	expect(document.activeElement).toBe(closeButton)
+
+	modal.close()
+	await new Promise((resolve) => {
+		setTimeout(() => {
+			expect(modalElement.style.display).toBe('')
 			resolve(null)
 		}, 400)
 	})

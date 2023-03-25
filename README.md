@@ -1,15 +1,13 @@
 # EasyJsModal
 
-EasyJsModal is a lightweight, easy-to-use, and customizable modal window solution for modern web applications. This library allows you to create a modal window with minimal code and offers seamless integration.
+EasyJsModal is a lightweight and customizable modal window solution. It allows you to create a modal window with a few lines of code.
 
 ## Features
-* Lightweight and minimal footprint
-* Easily customizable
-* Supports multiple integration options (npm, CDN)
-* No dependencies required
-* Responsive design
-* Accessible and user-friendly
-* Future development plans for nested modals, improved accessibility, and style customization through configuration
+
+- Easy to use and integrate into your project
+- Customizable appearance using configuration
+- Supports keyboard navigation and traps focus within the modal
+- No dependencies, lightweight, and efficient
 
 ## Installation
 
@@ -26,7 +24,10 @@ npm install easy-js-modal
 Include the following script and stylesheet in the `<head>` section of your HTML file:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easy-js-modal/dist/style.min.css">
+<link
+	rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/easy-js-modal/dist/style.min.css"
+/>
 <script src="https://cdn.jsdelivr.net/npm/easy-js-modal/dist-iife/easy-js-modal.min.js"></script>
 ```
 
@@ -54,7 +55,7 @@ To close the modal window, you can call the `close` method:
 modal.close()
 ```
 
-To customize the modal window, you can pass a config object as the second parameter of the `EasyJsModal` constructor:
+To customize the modal window, you can pass a config object as the second parameter of the `EasyJsModal` constructor. Additionally, you can customize the appearance of the modal window by passing a `styles` object as the third parameter:
 
 ```js
 const config = {
@@ -62,7 +63,17 @@ const config = {
 	modalBlockClass: 'custom-modal'
 }
 
-const modal = new EasyJsModal(content, config)
+const styles = {
+	layoutBackgroundColor: 'rgba(0, 0, 0, 0.7)',
+	windowBackgroundColor: '#f0f0f0',
+	windowWidth: '80%',
+	windowMaxWidth: '600px',
+	windowPadding: '1.5rem',
+	windowBorderRadius: '1rem',
+	closeFontSize: '1.5rem'
+}
+
+const modal = new EasyJsModal(content, config, styles)
 ```
 
 This will change the animation duration to 500ms and apply the `custom-modal` class to the modal window.
@@ -74,32 +85,43 @@ The following options are available in the config object:
 - `animationDuration` (number, default: 300): the animation duration in milliseconds.
 - `modalBlockClass` (string, default: 'modal'): the class name of the modal container element.
 
+## Styles
+
+The following options are available in the styles object:
+
+- `layoutBackgroundColor` (string, default: 'rgba(0, 0, 0, 0.5)'): background color of the modal layout.
+- `windowBackgroundColor` (string, default: '#fff'): background color of the modal window.
+- `windowWidth` (string, default: '90%'): width of the modal window.
+- `windowMaxWidth` (string, default: '500px'): maximum width of the modal window.
+- `windowPadding` (string, default: '2rem'): padding inside the modal window.
+- `windowBorderRadius` (string, default: '0.5rem'): border radius of the modal window.
+- `closeFontSize` (string, default: '1.25rem'): font size of the close button.
+
 ## Methods
 
 - `open()`: displays the modal window.
 - `close()`: hides the modal window.
 
-## Demo
-* [Demo with npm integration](https://codepen.io/smargelov/pen/PodXXYw)
-* [Demo with CDN integration](https://codepen.io/smargelov/pen/jOvXXOy)
-
-## Future Development Plans
-* Support for nested modals (modals within modals)
-* Enhanced accessibility features
-* Style customization through configuration options
-
 ## Browser Support
 
-EasyJsModal is designed to work with modern web browsers, including:
+EasyJsModal has been tested and works in modern browsers like Chrome, Firefox, Safari, and Edge. Internet Explorer 11 is not officially supported and may not work as expected.
 
-* Chrome 49+
-* Firefox 45+
-* Safari 10+
-* Edge 16+
+## Demo
 
-**Please note** that EasyJsModal has **not been tested in Internet Explorer 11** and might not work properly due to the library relying on features not available in this outdated browser.
+Visit our demo pages to see EasyJsModal in action with different configurations:
 
-For the best user experience, we recommend using the latest version of your preferred web browser.
+- [Demo with npm integration](https://codepen.io/smargelov/pen/PodXXYw)
+- [Demo with CDN integration](https://codepen.io/smargelov/pen/jOvXXOy)
+
+## Future Development
+
+We have plans to further enhance EasyJsModal, including:
+
+- Allowing modals to be called from within other modals
+- Improving accessibility features
+- Allowing more customization options through configuration
+
+We welcome contributions and suggestions to improve this project. Feel free to open issues or submit pull requests on the [GitHub repository](https://github.com/yourusername/easy-js-modal).
 
 ## License
 
