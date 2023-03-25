@@ -5,7 +5,8 @@ export default defineConfig({
 		lib: {
 			entry: 'src/main.ts',
 			name: 'EasyJsModal',
-			fileName: 'easy-js-modal'
+			fileName: 'easy-js-modal',
+			formats: ['es']
 		},
 		rollupOptions: {
 			external: [],
