@@ -6,7 +6,13 @@ const ready = () => {
 		.querySelector<HTMLElement>('#openForm')!
 		.addEventListener('click', () => {
 			const modal = new EasyJsModal(
-				'<h1>Modal</h1><p>Modal <a href="#">content</a></p>'
+				'<h1>Modal</h1><p>Modal <a href="#">content</a></p>',
+				{
+					animationDuration: 500
+				},
+				{
+					windowBackgroundColor: '#ccc'
+				}
 			)
 			modal.open()
 		})

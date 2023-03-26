@@ -3,6 +3,8 @@ import EasyJsModal from './EasyJsModal'
 class ModalManager {
 	private activeModal: EasyJsModal | null = null
 
+	focusableElementBeforeModal: HTMLElement | null = null
+
 	setActiveModal(modal: EasyJsModal): void {
 		if (this.activeModal) {
 			this.activeModal.close()
