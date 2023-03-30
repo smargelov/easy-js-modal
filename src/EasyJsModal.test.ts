@@ -208,3 +208,120 @@ test('Modal traps focus within the modal', async () => {
 		}, 400)
 	})
 })
+
+test('Modal saves and restores focus state', async () => {
+	const content = '<p>Hello, world!</p>'
+	const modal = new EasyJsModal(content)
+
+	const button1 = document.createElement('button')
+	button1.textContent = 'Focusable Button 1'
+	document.body.appendChild(button1)
+
+	const button2 = document.createElement('button')
+	button2.textContent = 'Focusable Button 2'
+	document.body.appendChild(button2)
+
+	button1.focus()
+	expect(document.activeElement).toBe(button1)
+
+	modal.open()
+	const modalElement = document.querySelector('.modal') as HTMLElement
+
+	expect(document.activeElement).not.toBe(button1)
+	expect(document.activeElement).not.toBe(button2)
+
+	modal.close()
+	await new Promise((resolve) => {
+		setTimeout(() => {
+			expect(modalElement.style.display).toBe('')
+			expect(document.activeElement).toBe(button1)
+			resolve(null)
+		}, 400)
+	})
+
+	button1.remove()
+	button2.remove()
+})
+
+test('Modal restores focus state when there is no focusable element inside the modal', async () => {
+	const content = '<p>Hello, world!</p>'
+	const modal = new EasyJsModal(content)
+
+	const button1 = document.createElement('button')
+	button1.textContent = 'Focusable Button 1'
+	document.body.appendChild(button1)
+
+	button1.focus()
+	expect(document.activeElement).toBe(button1)
+
+	modal.open()
+	const modalElement = document.querySelector('.modal') as HTMLElement
+
+	modal.close()
+	await new Promise((resolve) => {
+		setTimeout(() => {
+			expect(modalElement.style.display).toBe('')
+			expect(document.activeElement).toBe(button1)
+			resolve(null)
+		}, 400)
+	})
+
+	button1.remove()
+})
+
+test('Modal calls onOpen and onClose callbacks', async () => {
+	const content = '<p>Hello, world!</p>'
+
+	let onOpenCalled = false
+	let onCloseCalled = false
+
+	const onOpen = () => {
+		onOpenCalled = true
+	}
+
+	const onClose = () => {
+		onCloseCalled = true
+	}
+
+	const modal = new EasyJsModal(content, { onOpen, onClose })
+
+	modal.open()
+	const modalElement = document.querySelector('.modal') as HTMLElement
+	expect(modalElement).toBeDefined()
+	expect(modalElement.style.display).toBe('flex')
+
+	await new Promise((resolve) => {
+		setTimeout(() => {
+			expect(onOpenCalled).toBe(true)
+			resolve(null)
+		}, 500)
+	})
+
+	modal.close()
+	await new Promise((resolve) => {
+		setTimeout(() => {
+			expect(modalElement.style.display).toBe('')
+			expect(onCloseCalled).toBe(true)
+			resolve(null)
+		}, 500)
+	})
+})
+
+test('Modal does not call onOpen and onClose callbacks if not provided', async () => {
+	const content = '<p>Hello, world!</p>'
+
+	const modal = new EasyJsModal(content)
+
+	modal.open()
+	const modalElement = document.querySelector('.modal') as HTMLElement
+	expect(modalElement).toBeDefined()
+	expect(modalElement.style.display).toBe('flex')
+
+	modal.close()
+	await new Promise((resolve) => {
+		setTimeout(() => {
+			expect(modalElement.style.display).toBe('')
+			resolve(null)
+		}, 400)
+	})
+})

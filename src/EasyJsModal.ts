@@ -36,6 +36,8 @@ const convertCamelToPrefixedKebabCase = (camelCaseString: string): string => {
 interface ModalConfig {
 	animationDuration: number
 	modalBlockClass: string
+	onOpen?: () => void
+	onClose?: () => void
 }
 
 interface ModalStylesConfig {
@@ -67,6 +69,10 @@ export class EasyJsModal {
 
 	private modalWindowClass: string
 
+	private onOpen?: () => void
+
+	private onClose?: () => void
+
 	private modalStyles: ModalStyles
 
 	private openTimeout: ReturnType<typeof setTimeout> | null = null
@@ -78,6 +84,8 @@ export class EasyJsModal {
 		config?: Partial<ModalConfig>,
 		styles?: Partial<ModalStylesConfig>
 	) {
+		this.onOpen = config?.onOpen
+		this.onClose = config?.onClose
 		this.modalBlockClass = config?.modalBlockClass || 'modal'
 		this.animationDuration = config?.animationDuration || 300
 		this.closeButtonClass = `${this.modalBlockClass}__close`
@@ -146,6 +154,9 @@ export class EasyJsModal {
 		this.openTimeout = setTimeout(() => {
 			this.modalElement.classList.add(`${this.modalBlockClass}--visible`)
 			this.modalWindow.classList.add(`${this.modalWindowClass}--visible`)
+			if (this.onOpen) {
+				this.onOpen()
+			}
 			if (this.openTimeout !== null) {
 				clearTimeout(this.openTimeout)
 				this.openTimeout = null
@@ -173,6 +184,9 @@ export class EasyJsModal {
 			this.modalElement.style.display = ''
 			this.removeEventListeners()
 			this.destroy()
+			if (this.onClose) {
+				this.onClose()
+			}
 			if (this.closeTimeout !== null) {
 				clearTimeout(this.closeTimeout)
 				this.closeTimeout = null

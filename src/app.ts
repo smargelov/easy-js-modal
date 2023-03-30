@@ -8,7 +8,8 @@ const ready = () => {
 			const modal = new EasyJsModal(
 				'<h1>Modal</h1><p>Modal <a href="#">content</a></p>',
 				{
-					animationDuration: 500
+					animationDuration: 500,
+					onOpen
 				},
 				{
 					windowBackgroundColor: '#ccc'
@@ -16,6 +17,10 @@ const ready = () => {
 			)
 			modal.open()
 		})
+}
+
+function onOpen(): void {
+	console.log('Modal opened')
 }
 
 document.addEventListener('DOMContentLoaded', ready)
