@@ -9,6 +9,7 @@ const ready = () => {
 				'<h1>Modal</h1><p>Modal <a class="modal-test" href="#">content</a></p>',
 				{
 					animationDuration: 500,
+					/* eslint-disable no-use-before-define */
 					onOpen
 				},
 				{
