@@ -325,3 +325,30 @@ test('Modal does not call onOpen and onClose callbacks if not provided', async (
 		}, 400)
 	})
 })
+
+test('Modal updates content with setContent', async () => {
+	const initialContent = '<p>Initial content</p>'
+	const newContent = '<p>New content</p>'
+	const newContentElement = document.createElement('div')
+	newContentElement.innerHTML = newContent
+	const modal = new EasyJsModal(initialContent)
+
+	modal.open()
+	const modalWindow = document.querySelector('.modal__window') as HTMLElement
+	expect(modalWindow.innerHTML).toContain(initialContent)
+
+	const closeButton = modalWindow.querySelector('.modal__close') as HTMLElement
+	expect(closeButton).toBeDefined()
+
+	modal.setContent(newContentElement)
+	expect(modalWindow.contains(newContentElement)).toBe(true)
+	expect(modalWindow.querySelector('.modal__close')).toBe(closeButton)
+
+	modal.close()
+	await new Promise((resolve) => {
+		setTimeout(() => {
+			expect(document.querySelector('.modal')).toBeNull()
+			resolve(null)
+		}, 400)
+	})
+})

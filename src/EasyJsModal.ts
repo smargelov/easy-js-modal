@@ -141,6 +141,21 @@ export class EasyJsModal {
 		)
 	}
 
+	setContent(newContent: string | HTMLElement): void {
+		const closeButton = this.modalWindow.querySelector(
+			`.${this.closeButtonClass}`
+		)
+		this.modalWindow.innerHTML = ''
+		if (typeof newContent === 'string') {
+			this.modalWindow.innerHTML = newContent
+		} else {
+			this.modalWindow.appendChild(newContent)
+		}
+		if (closeButton) {
+			this.modalWindow.appendChild(closeButton)
+		}
+	}
+
 	open(): void {
 		if (modalManager.isActiveModal) {
 			console.warn(

@@ -6,7 +6,7 @@ const ready = () => {
 		.querySelector<HTMLElement>('#openForm')!
 		.addEventListener('click', () => {
 			const modal = new EasyJsModal(
-				'<h1>Modal</h1><p>Modal <a href="#">content</a></p>',
+				'<h1>Modal</h1><p>Modal <a class="modal-test" href="#">content</a></p>',
 				{
 					animationDuration: 500,
 					onOpen
@@ -16,11 +16,15 @@ const ready = () => {
 				}
 			)
 			modal.open()
+			function onOpen(): void {
+				document
+					.querySelector<HTMLElement>('.modal-test')!
+					.addEventListener('click', (event) => {
+						event.preventDefault()
+						modal.setContent('<h1>Updated content</h1>')
+					})
+			}
 		})
-}
-
-function onOpen(): void {
-	console.log('Modal opened')
 }
 
 document.addEventListener('DOMContentLoaded', ready)

@@ -103,6 +103,7 @@ The following options are available in the styles object:
 
 - `open()`: displays the modal window.
 - `close()`: hides the modal window.
+- `setContent(newContent: string)`: replaces the content of the modal window with the provided new content.
 
 ## Browser Support
 
