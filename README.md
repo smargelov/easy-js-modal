@@ -84,6 +84,8 @@ The following options are available in the config object:
 
 - `animationDuration` (number, default: 300): the animation duration in milliseconds.
 - `modalBlockClass` (string, default: 'modal'): the class name of the modal container element.
+- `onOpen` (function, optional): a callback function that is called when the modal is opened.
+- `onClose` (function, optional): a callback function that is called when the modal is closed.
 
 ## Styles
 
@@ -101,6 +103,7 @@ The following options are available in the styles object:
 
 - `open()`: displays the modal window.
 - `close()`: hides the modal window.
+- `setContent(newContent: string)`: replaces the content of the modal window with the provided new content.
 
 ## Browser Support
 
@@ -121,7 +124,7 @@ We have plans to further enhance EasyJsModal, including:
 - Improving accessibility features
 - Allowing more customization options through configuration
 
-We welcome contributions and suggestions to improve this project. Feel free to open issues or submit pull requests on the [GitHub repository](https://github.com/yourusername/easy-js-modal).
+We welcome contributions and suggestions to improve this project. Feel free to open issues or submit pull requests on the [GitHub repository](https://github.com/smargelov/easy-js-modal).
 
 ## License
 
